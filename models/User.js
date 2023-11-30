@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     required: true,
     trim: true,
+    lowercase: true,
   },
   email: {
     type: String,
@@ -15,16 +16,35 @@ const userSchema = new mongoose.Schema({
     unique: true,
     //validate the email
   },
-  // thoughts: [thoughtSchema],
+  thoughts: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Thought',
+  }],
+  friends: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  }],
 });
 
 const User = mongoose.model("user", userSchema);
 const handleError = (err) => console.error(err);
 
-User.create({
-  username: "ernie",
-  email: "123@email.com",
-})
+User.create(
+  {
+    username: "ernie",
+    email: "123@email.com",
+    friends: [],
+  },
+
+  {
+    username: "jmj",
+    email: "1234@email.com",
+  },
+  {
+    username: "bob",
+    email: "abc@email.com",
+  }
+)
   .then((result) => console.log("Created new document", result))
   .catch((err) => handleError(err));
 

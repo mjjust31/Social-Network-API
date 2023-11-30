@@ -43,8 +43,8 @@ app.put("/users/:username", async (req, res) => {
   try {
     // Uses findOneAndUpdate() method on model
     const result = await User.findOneAndUpdate(
-      { username: req.body.username },
       { username: req.params.username },
+      { username: req.body.username },
       { new: true }
     );
     res.status(200).json(result);
