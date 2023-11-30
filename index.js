@@ -1,6 +1,6 @@
 const express = require("express");
 const db = require("./config/connection");
-const { User, Thought } = require("./models");
+const { User, Thought, Reaction } = require("./models");
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -79,7 +79,15 @@ app.get('/thoughts', async (req, res) => {
   }
 });
 
-
+//create
+app.post("/thoughts", async (req, res) => {
+  try {
+    const result = await Thought.create(req.body);
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+});
 
 //delete user
 db.once("open", () => {
