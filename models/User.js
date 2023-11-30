@@ -16,14 +16,18 @@ const userSchema = new mongoose.Schema({
     unique: true,
     //validate the email
   },
-  thoughts: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Thought',
-  }],
-  friends: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-  }],
+  thoughtText: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Thought",
+    },
+  ],
+  friends: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
 
 const User = mongoose.model("user", userSchema);
@@ -33,16 +37,21 @@ User.create(
   {
     username: "ernie",
     email: "123@email.com",
-    friends: [],
+    friends: ["6568e01f0c3dc4c4cb8ad8d1", "6568e01f0c3dc4c4cb8ad8d2"],
+    thoughtText: "this is great",
   },
 
   {
     username: "jmj",
     email: "1234@email.com",
+    friends: ["6568d93a96ab4d10948e8f53", "6568e01f0c3dc4c4cb8ad8d2"],
+    thoughtText: "testing 1234",
   },
   {
     username: "bob",
     email: "abc@email.com",
+    friends: "6568d93a96ab4d10948e8f53",
+    thoughtText: "White Sox",
   }
 )
   .then((result) => console.log("Created new document", result))

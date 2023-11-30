@@ -1,6 +1,6 @@
 const express = require("express");
 const db = require("./config/connection");
-const { User } = require("./models");
+const { User, Thought } = require("./models");
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -67,6 +67,19 @@ app.delete("/users/:username", async (req, res) => {
     res.status(500).json({ message: "something went wrong" });
   }
 });
+
+//get all thoughts
+app.get('/thoughts', async (req, res) => {
+  try {
+    // Using model in route to find all documents that are instances of that model
+    const result = await Thought.find({});
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json({ message: 'Internal server error' })
+  }
+});
+
+
 
 //delete user
 db.once("open", () => {
