@@ -177,6 +177,26 @@ app.post("/thoughts/:_id/reactions", async (req, res) => {
 });
 
 //deation reaction thoughts/thoughtId/reactions/reactionsId
+app.delete("/thoughts/:thoughtId/reactions/:reactionsId", async (req, res) => {
+  console.log("hit this route");
+  try {
+    const result = await Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $pull: { reactions: { _id: req.params.reactionsId } } },
+      { new: true }
+    );
+
+    if (!result) {
+      return res
+        .status(404)
+        .json({ message: "No result found with that ID :(" });
+    }
+
+    res.json(result);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 db.once("open", () => {
   app.listen(PORT, () => {
