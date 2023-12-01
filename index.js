@@ -1,6 +1,6 @@
 const express = require("express");
 const db = require("./config/connection");
-const { User, Thought, Reaction } = require("./models");
+const { User, Thought } = require("./models");
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -84,6 +84,7 @@ app.delete("/users/:username", async (req, res) => {
 
 //get all thoughts
 app.get("/thoughts", async (req, res) => {
+  console.log("you hit this route");
   try {
     // Using model in route to find all documents that are instances of that model
     const result = await Thought.find({});
@@ -148,20 +149,34 @@ app.delete("/thoughts/:_id", async (req, res) => {
 
 //add friend: /users/:userId/friends/:friendsId
 
-
 //delete friend /users/:userId/friends/:friendsId
-
-
-
 
 //add reaction thoughts/thoughtId/reactions
 
-app.post('')
-
+app.post("/thoughts/:_id/reactions", async (req, res) => {
+  console.log("You hit this route");
+  console.log(req.body);
+  try {
+    // const reaction = await Reaction.create(req.body); you are not exporting the model to be used in a reaction
+    const result = await Thought.findOneAndUpdate(
+      {
+        _id: req.params._id,
+      },
+      { $push: { reactions: req.body } },
+      { new: true }
+    );
+    if (!result) {
+      res
+        .status(404)
+        .json({ message: "No thought found with this id to make comment" });
+    }
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+  }
+});
 
 //deation reaction thoughts/thoughtId/reactions/reactionsId
-
-
 
 db.once("open", () => {
   app.listen(PORT, () => {

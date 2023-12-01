@@ -20,4 +20,6 @@ THEN I am able to successfully create and delete reactions to thoughts and add a
 
 Links used: Validation for Mongoose lowercase to deal with uppercase sensistivity: https://stackoverflow.com/questions/39904244/add-property-to-mongoose-document-pre-lowercase-validation
 
-NU Curriculum.
+difference between $push and $addtoset: https://stackoverflow.com/questions/27248556/mongodb-difference-between-push-addtoset
+
+NU Curriculum and the virtual tutor.
