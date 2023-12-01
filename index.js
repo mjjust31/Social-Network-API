@@ -19,9 +19,9 @@ app.get("/users", async (req, res) => {
 });
 
 //find one user
-app.get("/users/:username", async (req, res) => {
+app.get("/users/:userId", async (req, res) => {
   try {
-    const result = await User.findOne({ username: req.params.username });
+    const result = await User.findOne({ _id: req.params.userId });
     res.status(200).json(result);
   } catch (err) {
     res.status(500).send({ message: "Internal Server Error" });
@@ -55,12 +55,26 @@ app.put("/users/:username", async (req, res) => {
   }
 });
 
+//delete user
 app.delete("/users/:username", async (req, res) => {
   try {
     const result = await User.findOneAndDelete({
       username: req.params.username,
     });
-    res.status(200).json(result);
+
+    // let thoughtResult;
+
+    // if (result) {
+    //   const thoughtResult = await Thought.deleteMany({
+    //     username: result._id,
+    //   });
+    // }
+
+    res.status(200).json(
+      // { user:
+      result
+      // , thought: thoughtResult }
+    );
     console.log(`Deleted: ${result}`);
   } catch (err) {
     console.log("Uh Oh, something went wrong");
@@ -69,17 +83,27 @@ app.delete("/users/:username", async (req, res) => {
 });
 
 //get all thoughts
-app.get('/thoughts', async (req, res) => {
+app.get("/thoughts", async (req, res) => {
   try {
     // Using model in route to find all documents that are instances of that model
     const result = await Thought.find({});
     res.status(200).json(result);
   } catch (err) {
-    res.status(500).json({ message: 'Internal server error' })
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
-//create
+//get one thought
+
+app.get("/thoughts/:_id", async (req, res) => {
+  try {
+    const result = await Thought.findOne({ _id: req.params._id });
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+});
+
 app.post("/thoughts", async (req, res) => {
   try {
     const result = await Thought.create(req.body);
@@ -89,7 +113,56 @@ app.post("/thoughts", async (req, res) => {
   }
 });
 
-//delete user
+//update thought
+
+app.put("/thoughts/:_id", async (req, res) => {
+  try {
+    const result = await Thought.findOneAndUpdate(
+      {
+        _id: req.params._id,
+      },
+      {
+        thoughtText: req.body.thoughtText,
+      },
+      { new: true }
+    );
+    res.status(200).json(result);
+  } catch (err) {
+    console.log("Wrong");
+    res.status(500).json({ message: "something went wrong" });
+  }
+});
+
+//delete thought
+
+app.delete("/thoughts/:_id", async (req, res) => {
+  try {
+    const result = await Thought.findByIdAndDelete({
+      _id: req.params._id,
+    });
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json({ message: "Not correct" });
+  }
+});
+
+//add friend: /users/:userId/friends/:friendsId
+
+
+//delete friend /users/:userId/friends/:friendsId
+
+
+
+
+//add reaction thoughts/thoughtId/reactions
+
+app.post('')
+
+
+//deation reaction thoughts/thoughtId/reactions/reactionsId
+
+
+
 db.once("open", () => {
   app.listen(PORT, () => {
     console.log(`API server running on port ${PORT}!`);
