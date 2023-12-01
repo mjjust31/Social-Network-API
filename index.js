@@ -108,6 +108,15 @@ app.get("/thoughts/:_id", async (req, res) => {
 app.post("/thoughts", async (req, res) => {
   try {
     const result = await Thought.create(req.body);
+
+    const userArray = await User.findOneAndUpdate(
+      {
+        username: req.body.username,
+      },
+      { $push: { thoughtText: result._id } },
+      { new: true }
+    );
+
     res.status(200).json(result);
   } catch (err) {
     res.status(500).send({ message: "Internal Server Error" });
