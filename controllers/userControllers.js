@@ -69,4 +69,51 @@ module.exports = {
       res.status(500).json({ message: "something went wrong" });
     }
   },
+
+  async addFriend(req, res) {
+    try {
+      const friend = await User.findById(req.params.friendId);
+      if (!friend) {
+        return res
+          .status(404)
+          .json({ message: "this user does not exist to be freinds with!" });
+      }
+
+      const result = await User.findOneAndUpdate(
+        {
+          _id: req.params.userId,
+        },
+        { $addToSet: { friends: req.params.friendId } },
+        { new: true }
+      );
+
+      if (!result) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.json(result);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  },
+
+  async deleteFriend(req, res) {
+    try {
+      const result = await User.findOneAndUpdate(
+        { _id: req.params.userId },
+        { $pull: { friends: { _id: req.params.friendId } } },
+        { new: true }
+      );
+
+      if (!result) {
+        return res
+          .status(404)
+          .json({ message: "No result found with that ID :(" });
+      }
+
+      res.json(result);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
 };
