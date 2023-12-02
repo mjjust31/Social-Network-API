@@ -1,6 +1,8 @@
 # Social-Network-API
 
-## Recording of app
+## Recording of app: 
+https://drive.google.com/file/d/1HvzVKwwUQYknLUlHwkRRgKZHpNgfvc0l/view
+
 
 ## Project Description
 Below is the user and acceptance criteria for this assignment. Using Mongoose, this project is builds routes for a back-end social network. In the network, each User has thoughts, a friends list, and the option to have other people comment on the user's thoughts. Routes were then created for each functionality and controllers were added to follow clean code practices. 
