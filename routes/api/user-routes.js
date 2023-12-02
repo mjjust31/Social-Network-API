@@ -1,80 +1,17 @@
 const router = require("express").Router();
 const { User, Thought } = require("../../models");
+const {
+  getAllUsers,
+  createUser,
+  findOneUser,
+  changeUser,
+  deleteUser,
+} = require("../../controllers/userControllers");
 
-//Get all users
-router.get("/", async (req, res) => {
-  try {
-    const result = await User.find({});
-    res.status(200).json(result);
-  } catch (err) {
-    res.status(500).send({ message: "Internal Server Error" });
-  }
-});
+//home routes
+router.route("/").get(getAllUsers).post(createUser);
+router.route("/:userId").get(findOneUser).put(changeUser).delete(deleteUser);
 
-router.post("/", async (req, res) => {
-  try {
-    const result = await User.create(req.body);
-    res.status(200).json(result);
-  } catch (err) {
-    res.status(500).send({ message: "Internal Server Error" });
-  }
-});
-
-//find one user
-router.get("/:userId", async (req, res) => {
-  try {
-    const result = await User.findOne({ _id: req.params.userId });
-    res.status(200).json(result);
-  } catch (err) {
-    res.status(500).send({ message: "Internal Server Error" });
-  }
-});
-
-//change User
-router.put("/:username", async (req, res) => {
-  try {
-    // Uses findOneAndUpdate() method on model
-    const result = await User.findOneAndUpdate(
-      { username: req.params.username },
-      { username: req.body.username },
-      { new: true }
-    );
-    res.status(200).json(result);
-    console.log(`Updated: ${result}`);
-  } catch (err) {
-    console.log("Uh Oh, something went wrong");
-    res.status(500).json({ message: "something went wrong" });
-  }
-});
-
-//delete user
-router.delete("/:username", async (req, res) => {
-  try {
-    const result = await User.findOneAndDelete({
-      username: req.params.username,
-    });
-
-    let thoughtResult; // Declare thoughtResult here
-
-    if (result) {
-      thoughtResult = await Thought.deleteMany({
-        username: result._id,
-      });
-    }
-
-    res.status(200).json({
-      user: result,
-      thought: thoughtResult,
-    });
-
-    console.log(`Deleted: ${result}`);
-  } catch (err) {
-    console.log("Uh Oh, something went wrong");
-    res.status(500).json({ message: "something went wrong" });
-  }
-});
-
-//add friend: /users/:userId/friends/:friendsId
 
 router.post("/:userId/friends/:friendId", async (req, res) => {
   console.log("yay you hit the friend route");
