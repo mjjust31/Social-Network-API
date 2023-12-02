@@ -1,5 +1,10 @@
 # Social-Network-API
 
+## Recording of app
+
+## Project Description
+Below is the user and acceptance criteria for this assignment. Using Mongoose, this project is builds routes for a back-end social network. In the network, each User has thoughts, a friends list, and the option to have other people comment on the user's thoughts. Routes were then created for each functionality and controllers were added to follow clean code practices. 
+
 
 ## User Story 
 AS A social media startup
@@ -18,8 +23,25 @@ WHEN I test API POST and DELETE routes in Insomnia
 THEN I am able to successfully create and delete reactions to thoughts and add and remove friends to a user’s friend list
 
 
-Links used: Validation for Mongoose lowercase to deal with uppercase sensistivity: https://stackoverflow.com/questions/39904244/add-property-to-mongoose-document-pre-lowercase-validation
+## How to use the project
+This project uses Mongoose and Express. After running "npm i" in the terminal, use "npm start" to start the application. To test the routes, go to the routes folder to see the "user" and "thoughts" routes. Each of these routes can be tested using Postman. 
 
-difference between $push and $addtoset: https://stackoverflow.com/questions/27248556/mongodb-difference-between-push-addtoset
+## Credits
+Links used:
+1) NU Curriculum and the virtual tutor when I got stuck.
+2)  Validation for Mongoose lowercase to deal with uppercase sensistivity: https://stackoverflow.com/questions/39904244/add-property-to-mongoose-document-pre-lowercase-validation
+3) difference between $push and $addtoset: https://stackoverflow.com/questions/27248556/mongodb-difference-between-push-addtoset
+4) validator and expression for validating email: https://stackoverflow.com/questions/18022365/mongoose-validate-email-syntax
 
-NU Curriculum and the virtual tutor.
+## License
+
+This project is under the MIT license
+
+## How to Contribute to the Project
+
+As I am still a student learning how to code, all contributions are welcome for this project. The criteria would be to use Mongoose and Express and keep it to best practices using back-end development. 
+
+## Contact me
+Name: Jessica Justmann
+email: mj.justmann@gmail.com
+github: mjjust31
