@@ -1,6 +1,7 @@
-const { User, Model } = require("../models");
+const { User, Thought } = require("../models");
 
 module.exports = {
+  //works
   async getAllUsers(req, res) {
     try {
       const result = await User.find({});
@@ -10,6 +11,7 @@ module.exports = {
     }
   },
 
+  //works
   async createUser(req, res) {
     try {
       const result = await User.create(req.body);
@@ -19,6 +21,7 @@ module.exports = {
     }
   },
 
+  //works
   async findOneUser(req, res) {
     try {
       const result = await User.findOne({ _id: req.params.userId });
@@ -28,12 +31,20 @@ module.exports = {
     }
   },
 
+  //works
   async changeUser(req, res) {
     try {
-      // Uses findOneAndUpdate() method on model
+      const update = {};
+      if (req.body.username) {
+        update.username = req.body.username;
+      }
+      if (req.body.email) {
+        update.email = req.body.email;
+      }
+
       const result = await User.findOneAndUpdate(
-        { username: req.params.userId },
-        { username: req.body.userId },
+        { _id: req.params.userId },
+        update,
         { new: true }
       );
       res.status(200).json(result);
@@ -44,24 +55,14 @@ module.exports = {
     }
   },
 
+  //works
   async deleteUser(req, res) {
     try {
       const result = await User.findOneAndDelete({
-        username: req.params.userId,
+        _id: req.params.userId,
       });
 
-      let thoughtResult; // Declare thoughtResult here
-
-      if (result) {
-        thoughtResult = await Thought.deleteMany({
-          username: result._id,
-        });
-      }
-
-      res.status(200).json({
-        user: result,
-        thought: thoughtResult,
-      });
+      res.status(200).json(result);
 
       console.log(`Deleted: ${result}`);
     } catch (err) {
@@ -70,6 +71,7 @@ module.exports = {
     }
   },
 
+  // works
   async addFriend(req, res) {
     try {
       const friend = await User.findById(req.params.friendId);
@@ -83,7 +85,7 @@ module.exports = {
         {
           _id: req.params.userId,
         },
-        { $addToSet: { friends: req.params.friendId } },
+        { $addToSet: { friends: {_id: friend._id} } },
         { new: true }
       );
 
@@ -96,8 +98,9 @@ module.exports = {
       res.status(500).json({ message: "Internal server error" });
     }
   },
-
+//working
   async deleteFriend(req, res) {
+    console.log("hit delete route");
     try {
       const result = await User.findOneAndUpdate(
         { _id: req.params.userId },
@@ -105,12 +108,7 @@ module.exports = {
         { new: true }
       );
 
-      if (!result) {
-        return res
-          .status(404)
-          .json({ message: "No result found with that ID :(" });
-      }
-
+      console.log(result);
       res.json(result);
     } catch (err) {
       res.status(500).json(err);

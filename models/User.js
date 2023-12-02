@@ -16,22 +16,25 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: {
       validator: function (value) {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
       },
       message: "Invalid email format",
-      },
-      },
+    },
   },
   thoughtText: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Thought",
+      _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Thought",
+      },
     },
   ],
   friends: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
     },
   ],
 });
@@ -40,6 +43,5 @@ userSchema.virtual("friendCount").get(function () {
   return this.friends.length;
 });
 const User = mongoose.model("user", userSchema);
-
 
 module.exports = User;

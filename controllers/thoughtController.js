@@ -1,6 +1,7 @@
-const { Thought, Model } = require("../models");
+const { Thought, User } = require("../models");
 
 module.exports = {
+  //works
   async getAllThoughts(req, res) {
     try {
       const result = await Thought.find({});
@@ -10,7 +11,9 @@ module.exports = {
     }
   },
 
+  //works
   async createThought(req, res) {
+    console.log('route hit')
     try {
       const result = await Thought.create(req.body);
 
@@ -18,7 +21,7 @@ module.exports = {
         {
           username: req.body.username,
         },
-        { $push: { thoughtText: result._id } },
+        { $push: { thoughtText: { _id: result._id } } },
         { new: true }
       );
 
@@ -28,6 +31,7 @@ module.exports = {
     }
   },
 
+  //works
   async getOneThought(req, res) {
     try {
       const result = await Thought.findOne({ _id: req.params._id });
@@ -37,6 +41,7 @@ module.exports = {
     }
   },
 
+  //works
   async updateThought(req, res) {
     try {
       const result = await Thought.findOneAndUpdate(
@@ -55,6 +60,7 @@ module.exports = {
     }
   },
 
+  //works
   async deleteThought(req, res) {
     try {
       const result = await Thought.findByIdAndDelete({
@@ -66,6 +72,7 @@ module.exports = {
     }
   },
 
+  //works
   async createReaction(req, res) {
     try {
       // const reaction = await Reaction.create(req.body); you are not exporting the model to be used in a reaction
@@ -87,6 +94,7 @@ module.exports = {
     }
   },
   async deleteReaction(req, res) {
+    console.log('delete route')
     try {
       const result = await Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
